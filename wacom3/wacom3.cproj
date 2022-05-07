@@ -206,9 +206,6 @@
     <Folder Include="Config\" />
     <Folder Include="doxygen\" />
     <Folder Include="doxygen\generator\" />
-    <Folder Include="examples\" />
-    <Folder Include="examples\include\" />
-    <Folder Include="examples\src\" />
     <Folder Include="include\" />
     <Folder Include="modules\" />
     <Folder Include="modules\adc\" />
@@ -306,18 +303,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="driver_isr.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="examples\include\adc_basic_example.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="examples\include\dac_basic_example.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="examples\src\adc_basic_example.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="examples\src\dac_basic_example.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\adc_basic.h">

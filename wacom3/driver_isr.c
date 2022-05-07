@@ -38,6 +38,18 @@
 #include <util/delay.h>
 
 volatile uint16_t blank = 0;
+volatile uint8_t pix = 0;
+typedef union {
+	unsigned char val;
+	struct {
+		unsigned sel:3;
+		unsigned chip:5;
+	};
+} conn;
+
+#define XTOTAL 20
+#define YTOTAL 13
+const conn array[XTOTAL+YTOTAL] = {0b00001101, 0b00001111, 0b00001110, 0b00001100, 0b00001010, 0b00001001, 0b00001000, 0b00001011, 0b00010100, 0b00010110, 0b00010111, 0b00010101, 0b00010010, 0b00010001, 0b00010000, 0b00010011, 0b00100100, 0b00100110, 0b00100111, 0b00100101, 0b01000011, 0b01000000, 0b01000001, 0b01000010, 0b01000100, 0b01000110, 0b01000111, 0b01000101, 0b10000011, 0b10000000, 0b10000001, 0b10000010, 0b10000101};
 #define BLANK 128
 inline void ind(uint8_t val){
 			VPORTC.OUT = (VPORTC.OUT&0xf8) | (val&7);
@@ -47,13 +59,11 @@ inline void sel(uint8_t val){
 }
 ISR(TCA1_CMP0_vect)
 {
-	if(blank < BLANK)
-		ind(1);
+	//sel(0xf);
+	//ind(1);
 	/* Insert your TCA Compare 0 Interrupt handling code here */
 	if(blank == BLANK){
-		ind(1);
-		sel(0xf);
-	PORTF_set_pin_level(5, true);
+		PORTF_set_pin_level(5, true);
 		PE0_set_dir(PORT_DIR_IN);
 		_delay_loop_1(5);
 		OPERATIONAL_AMPLIFIER_0_EnableSystem();
@@ -61,10 +71,15 @@ ISR(TCA1_CMP0_vect)
 
 	if(blank == BLANK*2){
 		OPERATIONAL_AMPLIFIER_0_DisableSystem();
-	PORTF_set_pin_level(5, false);
+		PORTF_set_pin_level(5, false);
 		PE0_set_dir(PORT_DIR_OUT);
 		blank = 0;
-		sel(0xf);
+		pix++;
+		if(pix == 33) pix = 0;
+		conn tmp = array[pix];
+		// check wires for msb and lsb
+		ind(tmp.sel);
+		sel(~tmp.chip);
 	}else
 		blank++;
 	/* The interrupt flag has to be cleared manually */

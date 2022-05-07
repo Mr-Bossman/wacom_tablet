@@ -1,0 +1,7 @@
+.vs
+wacom3/Debug/*
+!wacom3/Debug/Makefile
+!wacom3/Debug/makedep.mk
+wacom3/Release/*
+!wacom3/Release/Makefile
+!wacom3/Release/makedep.mk

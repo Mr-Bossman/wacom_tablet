@@ -76,7 +76,7 @@ int8_t OPERATIONAL_AMPLIFIER_0_init()
 			 | OPAMP_OP1RESMUX_MUXBOT_OFF_gc /* Multiplexer off */
 			 | OPAMP_OP1RESMUX_MUXWIP_WIP0_gc; /* R1 = 15R, R2 = 1R, R2/R1 = 0.07 */
 
-	OPAMP.OP1INMUX = OPAMP_OP1INMUX_MUXPOS_VDDDIV2_gc /* VDD/2 */
+	OPAMP.OP1INMUX = OPAMP_OP1INMUX_MUXPOS_DAC_gc /* VDD/2 */
 	                 | OPAMP_OP1INMUX_MUXNEG_INN_gc;  /* Negative input pin for OPn */
 
 	OPAMP.OP2SETTLE = 0x1 << OPAMP_SETTLE_gp; /* Setting: 0x1 */

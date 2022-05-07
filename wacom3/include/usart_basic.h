@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief DAC Basic driver example.
+ * \brief USART basic driver.
  *
  (c) 2020 Microchip Technology Inc. and its subsidiaries.
 
@@ -25,15 +25,43 @@
  *
  */
 
+#ifndef USART_BASIC_H_INCLUDED
+#define USART_BASIC_H_INCLUDED
+
 #include <atmel_start.h>
-#include <dac_basic_example.h>
-#include <dac_basic.h>
+#include <stdbool.h>
 
-uint8_t DAC_0_test_dac_basic(void)
-{
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-	// Start DAC conversion
-	DAC_0_set_output(DAC_0_get_resolution() / 2);
+/* Normal Mode, Baud register value */
+#define USART_BAUD_RATE(BAUD_RATE) ((float)(F_CPU * 64 / (16 * (float)BAUD_RATE)) + 0.5)
 
-	return 1;
+int8_t USART_ASYNC_init();
+
+void USART_ASYNC_enable();
+
+void USART_ASYNC_enable_rx();
+
+void USART_ASYNC_enable_tx();
+
+void USART_ASYNC_disable();
+
+uint8_t USART_ASYNC_get_data();
+
+bool USART_ASYNC_is_tx_ready();
+
+bool USART_ASYNC_is_rx_ready();
+
+bool USART_ASYNC_is_tx_busy();
+
+uint8_t USART_ASYNC_read(void);
+
+void USART_ASYNC_write(const uint8_t data);
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif /* USART_BASIC_H_INCLUDED */

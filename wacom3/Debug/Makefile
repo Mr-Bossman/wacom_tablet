@@ -36,9 +36,6 @@ SUBDIRS :=  \
 ../Config/ \
 ../doxygen/ \
 ../doxygen/generator/ \
-../examples/ \
-../examples/include/ \
-../examples/src/ \
 ../include/ \
 ../modules/ \
 ../modules/adc/ \
@@ -68,8 +65,6 @@ SUBDIRS :=  \
 C_SRCS +=  \
 ../atmel_start.c \
 ../driver_isr.c \
-../examples/src/adc_basic_example.c \
-../examples/src/dac_basic_example.c \
 ../main.c \
 ../src/adc_basic.c \
 ../src/bod.c \
@@ -93,8 +88,6 @@ ASM_SRCS +=
 OBJS +=  \
 atmel_start.o \
 driver_isr.o \
-examples/src/adc_basic_example.o \
-examples/src/dac_basic_example.o \
 main.o \
 src/adc_basic.o \
 src/bod.o \
@@ -111,8 +104,6 @@ src/tca.o
 OBJS_AS_ARGS +=  \
 atmel_start.o \
 driver_isr.o \
-examples/src/adc_basic_example.o \
-examples/src/dac_basic_example.o \
 main.o \
 src/adc_basic.o \
 src/bod.o \
@@ -129,8 +120,6 @@ src/tca.o
 C_DEPS +=  \
 atmel_start.d \
 driver_isr.d \
-examples/src/adc_basic_example.d \
-examples/src/dac_basic_example.d \
 main.d \
 src/adc_basic.d \
 src/bod.d \
@@ -147,8 +136,6 @@ src/tca.d
 C_DEPS_AS_ARGS +=  \
 atmel_start.d \
 driver_isr.d \
-examples/src/adc_basic_example.d \
-examples/src/dac_basic_example.d \
 main.d \
 src/adc_basic.d \
 src/bod.d \
@@ -184,20 +171,6 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./driver_isr.o: .././driver_isr.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Config" -I"../examples/include" -I"../include" -I"../utils" -I"../utils/assembler" -I".." -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\AVR-Dx_DFP\1.8.95\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=avr128db48 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\AVR-Dx_DFP\1.8.95\gcc\dev\avr128db48" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-examples/src/adc_basic_example.o: ../examples/src/adc_basic_example.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Config" -I"../examples/include" -I"../include" -I"../utils" -I"../utils/assembler" -I".." -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\AVR-Dx_DFP\1.8.95\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=avr128db48 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\AVR-Dx_DFP\1.8.95\gcc\dev\avr128db48" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-examples/src/dac_basic_example.o: ../examples/src/dac_basic_example.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Config" -I"../examples/include" -I"../include" -I"../utils" -I"../utils/assembler" -I".." -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\AVR-Dx_DFP\1.8.95\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=avr128db48 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\AVR-Dx_DFP\1.8.95\gcc\dev\avr128db48" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

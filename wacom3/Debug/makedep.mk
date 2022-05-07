@@ -6,10 +6,6 @@ atmel_start.c
 
 driver_isr.c
 
-examples\src\adc_basic_example.c
-
-examples\src\dac_basic_example.c
-
 main.c
 
 src\adc_basic.c
