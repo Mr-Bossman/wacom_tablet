@@ -67,14 +67,14 @@ int8_t OPERATIONAL_AMPLIFIER_0_init()
 
 	OPAMP.OP1SETTLE = 0x1 << OPAMP_SETTLE_gp; /* Setting: 0x1 */
 
-	// OPAMP.OP1CTRLA = 0 << OPAMP_ALWAYSON_bp /* Always ON: disabled */
-	//		 | 0 << OPAMP_EVENTEN_bp /* Event Enable: disabled */
-	//		 | OPAMP_OP1CTRLA_OUTMODE_NORMAL_gc /* Output Driver in Normal Mode */
-	//		 | 0 << OPAMP_RUNSTBY_bp; /* Run is standby mode: disabled */
+	OPAMP.OP1CTRLA = 1 << OPAMP_ALWAYSON_bp /* Always ON: disabled */
+			 | 0 << OPAMP_EVENTEN_bp /* Event Enable: disabled */
+			 | OPAMP_OP1CTRLA_OUTMODE_NORMAL_gc /* Output Driver in Normal Mode */
+			 | 0 << OPAMP_RUNSTBY_bp; /* Run is standby mode: disabled */
 
-	// OPAMP.OP1RESMUX = OPAMP_OP1RESMUX_MUXTOP_OFF_gc /* Multiplexer off */
-	//		 | OPAMP_OP1RESMUX_MUXBOT_OFF_gc /* Multiplexer off */
-	//		 | OPAMP_OP1RESMUX_MUXWIP_WIP0_gc; /* R1 = 15R, R2 = 1R, R2/R1 = 0.07 */
+	OPAMP.OP1RESMUX = OPAMP_OP1RESMUX_MUXTOP_OFF_gc /* Multiplexer off */
+			 | OPAMP_OP1RESMUX_MUXBOT_OFF_gc /* Multiplexer off */
+			 | OPAMP_OP1RESMUX_MUXWIP_WIP0_gc; /* R1 = 15R, R2 = 1R, R2/R1 = 0.07 */
 
 	OPAMP.OP1INMUX = OPAMP_OP1INMUX_MUXPOS_VDDDIV2_gc /* VDD/2 */
 	                 | OPAMP_OP1INMUX_MUXNEG_INN_gc;  /* Negative input pin for OPn */
@@ -83,15 +83,15 @@ int8_t OPERATIONAL_AMPLIFIER_0_init()
 
 	OPAMP.OP2CTRLA = 1 << OPAMP_ALWAYSON_bp          /* Always ON: enabled */
 	                 | 1 << OPAMP_EVENTEN_bp         /* Event Enable: enabled */
-	                 | OPAMP_OP2CTRLA_OUTMODE_OFF_gc /* Output Driver Off */
+	                 | OPAMP_OP1CTRLA_OUTMODE_NORMAL_gc /* Output Driver Off */
 	                 | 0 << OPAMP_RUNSTBY_bp;        /* Run is standby mode: disabled */
 
-	// OPAMP.OP2RESMUX = OPAMP_OP2RESMUX_MUXTOP_OFF_gc /* Multiplexer off */
-	//		 | OPAMP_OP2RESMUX_MUXBOT_OFF_gc /* Multiplexer off */
-	//		 | OPAMP_OP2RESMUX_MUXWIP_WIP0_gc; /* R1 = 15R, R2 = 1R, R2/R1 = 0.07 */
+	OPAMP.OP2RESMUX = OPAMP_OP2RESMUX_MUXTOP_OFF_gc /* Multiplexer off */
+			 | OPAMP_OP2RESMUX_MUXBOT_OFF_gc /* Multiplexer off */
+			 | OPAMP_OP2RESMUX_MUXWIP_WIP0_gc; /* R1 = 15R, R2 = 1R, R2/R1 = 0.07 */
 
-	// OPAMP.OP2INMUX = OPAMP_OP2INMUX_MUXPOS_INP_gc /* Positive input pin for OPn */
-	//		 | OPAMP_OP2INMUX_MUXNEG_INN_gc; /* Negative input pin for OPn */
+	OPAMP.OP2INMUX = OPAMP_OP2INMUX_MUXPOS_INP_gc /* Positive input pin for OPn */
+			 | OPAMP_OP2INMUX_MUXNEG_INN_gc; /* Negative input pin for OPn */
 
 	return 0;
 }

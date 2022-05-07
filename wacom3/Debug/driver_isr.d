@@ -23,7 +23,9 @@ driver_isr.d driver_isr.o: .././driver_isr.c ../include/driver_init.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  ../include/clkctrl.h ../include/evsys.h ../include/slpctrl.h \
  ../include/cpuint.h ../include/dac_basic.h ../include/adc_basic.h \
- ../include/tca.h ../include/bod.h
+ ../include/tca.h ../include/bod.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h
 
 ../include/driver_init.h:
 
@@ -90,3 +92,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 ../include/tca.h:
 
 ../include/bod.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:

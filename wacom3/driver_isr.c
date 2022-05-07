@@ -35,6 +35,8 @@
 
 #include <driver_init.h>
 #include <compiler.h>
+#include <util/delay.h>
+
 volatile uint16_t blank = 0;
 #define BLANK 128
 inline void ind(uint8_t val){
@@ -49,16 +51,17 @@ ISR(TCA1_CMP0_vect)
 		ind(1);
 	/* Insert your TCA Compare 0 Interrupt handling code here */
 	if(blank == BLANK){
-OPERATIONAL_AMPLIFIER_0_EnableSystem();
 		ind(1);
 		sel(0xf);
-		PE1_set_level(true);
+	PORTF_set_pin_level(5, true);
 		PE0_set_dir(PORT_DIR_IN);
+		_delay_loop_1(5);
+		OPERATIONAL_AMPLIFIER_0_EnableSystem();
 	}
 
 	if(blank == BLANK*2){
-OPERATIONAL_AMPLIFIER_0_DisableSystem();
-		PE1_set_level(false);
+		OPERATIONAL_AMPLIFIER_0_DisableSystem();
+	PORTF_set_pin_level(5, false);
 		PE0_set_dir(PORT_DIR_OUT);
 		blank = 0;
 		sel(0xf);

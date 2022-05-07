@@ -67,7 +67,10 @@ PORTD_set_pin_pull_mode(1,PORT_PULL_OFF);
 	PE3_set_isc(PORT_ISC_INPUT_DISABLE_gc);
 	// Disable pull-up resistor
 	PE3_set_pull_mode(PORT_PULL_OFF);
-
+// Disable digital input buffer
+PORTE_pin_set_isc(1,PORT_ISC_INPUT_DISABLE_gc);
+// Disable pull-up resistor
+PORTE_set_pin_pull_mode(1,PORT_PULL_OFF);
 	// Disable digital input buffer
 	PE2_set_isc(PORT_ISC_INPUT_DISABLE_gc);
 	// Disable pull-up resistor
@@ -139,14 +142,10 @@ void system_init()
 
 	// Set pin direction to output
 
-	PE1_set_level(
-	    // <y> Initial level
-	    // <id> pad_initial_level
-	    // <false"> Low
-	    // <true"> High
-	    false);
+	PORTF_set_pin_level(5, false);
 
-	PE1_set_dir(PORT_DIR_OUT);
+
+		PORTF_set_pin_dir(5, PORT_DIR_OUT);
 
 	OPERATIONAL_AMPLIFIER_0_initialization();
 
