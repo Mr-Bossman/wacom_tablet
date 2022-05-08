@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name "AVR128DB48_Curiosity_Nano")(type "KiCad")(uri "${KIPRJMOD}/AVR128DB48_Curiosity_Nano.kicad_sym")(options "")(descr ""))
+  (lib (name "AVR128DB48-I_PT")(type "Legacy")(uri "${KIPRJMOD}/AVR128DB48-I_PT/AVR128DB48-I_PT.lib")(options "")(descr ""))
+)
