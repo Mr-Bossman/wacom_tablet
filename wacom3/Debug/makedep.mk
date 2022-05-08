@@ -30,3 +30,5 @@ src\slpctrl.c
 
 src\tca.c
 
+src\usart_basic.c
+

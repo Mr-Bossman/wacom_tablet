@@ -69,10 +69,10 @@ int8_t TIMER_0_init()
 	//		 | TCA_SINGLE_EVACTB_UPDOWN_gc; /* Count on prescaled clock. Event controls count direction. Up-count when
 	//event line is 0, down-count when event line is 1. */
 
-	// TCA0.SINGLE.INTCTRL = 0 << TCA_SINGLE_CMP0_bp /* Compare 0 Interrupt: disabled */
-	//		 | 0 << TCA_SINGLE_CMP1_bp /* Compare 1 Interrupt: disabled */
-	//		 | 0 << TCA_SINGLE_CMP2_bp /* Compare 2 Interrupt: disabled */
-	//		 | 0 << TCA_SINGLE_OVF_bp; /* Overflow Interrupt: disabled */
+	TCA0.SINGLE.INTCTRL = 1 << TCA_SINGLE_CMP0_bp /* Compare 0 Interrupt: disabled */
+		 | 0 << TCA_SINGLE_CMP1_bp /* Compare 1 Interrupt: disabled */
+		 | 0 << TCA_SINGLE_CMP2_bp /* Compare 2 Interrupt: disabled */
+		 | 0 << TCA_SINGLE_OVF_bp; /* Overflow Interrupt: disabled */
 
 	// TCA0.SINGLE.PER = 0xffff; /* Period: 0xffff */
 
@@ -100,7 +100,7 @@ int8_t TIMER_1_init()
 	// TCA1.SINGLE.CNT = 0x0; /* Count: 0x0 */
 
 	TCA1.SINGLE.CTRLB = 0 << TCA_SINGLE_ALUPD_bp    /* Auto Lock Update: disabled */
-	                    | 1 << TCA_SINGLE_CMP0EN_bp /* Compare 0 Enable: enabled */
+	                    | 0 << TCA_SINGLE_CMP0EN_bp /* Compare 0 Enable: enabled */
 	                    | 0 << TCA_SINGLE_CMP1EN_bp /* Compare 1 Enable: disabled */
 	                    | 0 << TCA_SINGLE_CMP2EN_bp /* Compare 2 Enable: disabled */
 	                    | TCA_SINGLE_WGMODE_FRQ_gc; /*  */

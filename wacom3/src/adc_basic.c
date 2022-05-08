@@ -48,14 +48,14 @@
 int8_t ADC_0_init()
 {
 
-	ADC0.CTRLB = ADC_SAMPNUM_ACC128_gc; /* 128 results accumulated */
+	ADC0.CTRLB = ADC_SAMPNUM_ACC4_gc; /* 128 results accumulated */
 
-	// ADC0.CTRLC = ADC_PRESC_DIV2_gc; /* CLK_PER divided by 2 */
+	ADC0.CTRLC = ADC_PRESC_DIV8_gc; /* CLK_PER divided by 2 */
 
-	// ADC0.CTRLD = 0x0 << ADC_SAMPDLY_gp /* Sampling Delay Selection: 0x0 */
-	//		 | ADC_INITDLY_DLY0_gc; /* Delay 0 CLK_ADC cycles */
+	ADC0.CTRLD = 0x0 << ADC_SAMPDLY_gp /* Sampling Delay Selection: 0x0 */
+		 | ADC_INITDLY_DLY0_gc; /* Delay 0 CLK_ADC cycles */
 
-	// ADC0.CTRLE = ADC_WINCM_NONE_gc; /* No Window Comparison */
+	ADC0.CTRLE = ADC_WINCM_NONE_gc; /* No Window Comparison */
 
 	// ADC0.DBGCTRL = 0 << ADC_DBGRUN_bp; /* Debug run: disabled */
 
@@ -64,11 +64,11 @@ int8_t ADC_0_init()
 	// ADC0.INTCTRL = 0 << ADC_RESRDY_bp /* Result Ready Interrupt Enable: disabled */
 	//		 | 0 << ADC_WCMP_bp; /* Window Comparator Interrupt Enable: disabled */
 
-	ADC0.MUXPOS = ADC_MUXPOS_AIN10_gc; /* ADC input pin 10 */
+	ADC0.MUXPOS = ADC_MUXPOS_AIN0_gc; /* ADC input pin 10 */
 
-	ADC0.MUXNEG = ADC_MUXNEG_AIN6_gc; /* ADC input pin 6 */
+	ADC0.MUXNEG = ADC_MUXNEG_DAC0_gc; /* ADC input pin 6 */
 
-	// ADC0.SAMPCTRL = 0x0 << ADC_SAMPLEN_gp; /* Sample length: 0x0 */
+	ADC0.SAMPCTRL = 0x0 << ADC_SAMPLEN_gp; /* Sample length: 0x0 */
 
 	// ADC0.WINHT = 0x0; /* Window Comparator High Threshold: 0x0 */
 

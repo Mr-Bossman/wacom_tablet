@@ -57,31 +57,36 @@ inline void ind(uint8_t val){
 inline void sel(uint8_t val){
 	VPORTC.OUT = (VPORTC.OUT&0x7) | (val<<3);
 }
-ISR(TCA1_CMP0_vect)
+ISR(TCA0_CMP0_vect)
 {
-	//sel(0xf);
-	//ind(1);
 	/* Insert your TCA Compare 0 Interrupt handling code here */
 	if(blank == BLANK){
-		PORTF_set_pin_level(5, true);
+		PORTF.OUTSET = PIN5_bm;
+		PORTF.OUTSET = PIN4_bm;
 		PE0_set_dir(PORT_DIR_IN);
 		_delay_loop_1(5);
-		OPERATIONAL_AMPLIFIER_0_EnableSystem();
+		OPAMP.OP0CTRLA |= OPAMP_OP0CTRLA_OUTMODE_NORMAL_gc;
 	}
-
+	if(blank == BLANK+(BLANK/2)){
+		uint16_t val = ADC_0_get_diff_conversion(ADC_MUXPOS_AIN0_gc, ADC_MUXNEG_GND_gc);
+		USART_ASYNC_write(val>>8);
+	}
 	if(blank == BLANK*2){
-		OPERATIONAL_AMPLIFIER_0_DisableSystem();
-		PORTF_set_pin_level(5, false);
+		OPAMP.OP0CTRLA &= ~OPAMP_OP0CTRLA_OUTMODE_NORMAL_gc; 
 		PE0_set_dir(PORT_DIR_OUT);
 		blank = 0;
 		pix++;
-		if(pix == 33) pix = 0;
+		PORTF.OUTCLR = PIN4_bm;
+		if(pix == 33) {
+			PORTF.OUTCLR = PIN5_bm;
+			pix = 0;
+		}
+		USART_ASYNC_write(0xff);
 		conn tmp = array[pix];
-		// check wires for msb and lsb
 		ind(tmp.sel);
 		sel(~tmp.chip);
 	}else
 		blank++;
 	/* The interrupt flag has to be cleared manually */
-	TCA1.SINGLE.INTFLAGS = TCA_SINGLE_CMP0_bm;
+	TCA0.SINGLE.INTFLAGS = TCA_SINGLE_CMP0_bm;
 }

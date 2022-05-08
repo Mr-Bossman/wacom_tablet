@@ -353,6 +353,9 @@
     <Compile Include="include\tca.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\usart_basic.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
@@ -387,6 +390,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\tca.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\usart_basic.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="utils\assembler.h">

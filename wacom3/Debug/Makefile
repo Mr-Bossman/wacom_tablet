@@ -75,7 +75,8 @@ C_SRCS +=  \
 ../src/evsys.c \
 ../src/opamp_basic.c \
 ../src/slpctrl.c \
-../src/tca.c
+../src/tca.c \
+../src/usart_basic.c
 
 
 PREPROCESSING_SRCS +=  \
@@ -99,7 +100,8 @@ src/evsys.o \
 src/opamp_basic.o \
 src/protected_io.o \
 src/slpctrl.o \
-src/tca.o
+src/tca.o \
+src/usart_basic.o
 
 OBJS_AS_ARGS +=  \
 atmel_start.o \
@@ -115,7 +117,8 @@ src/evsys.o \
 src/opamp_basic.o \
 src/protected_io.o \
 src/slpctrl.o \
-src/tca.o
+src/tca.o \
+src/usart_basic.o
 
 C_DEPS +=  \
 atmel_start.d \
@@ -131,7 +134,8 @@ src/evsys.d \
 src/opamp_basic.d \
 src/protected_io.d \
 src/slpctrl.d \
-src/tca.d
+src/tca.d \
+src/usart_basic.d
 
 C_DEPS_AS_ARGS +=  \
 atmel_start.d \
@@ -147,7 +151,8 @@ src/evsys.d \
 src/opamp_basic.d \
 src/protected_io.d \
 src/slpctrl.d \
-src/tca.d
+src/tca.d \
+src/usart_basic.d
 
 OUTPUT_FILE_PATH +=wacom3.elf
 
@@ -248,6 +253,13 @@ src/slpctrl.o: ../src/slpctrl.c
 	
 
 src/tca.o: ../src/tca.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Config" -I"../examples/include" -I"../include" -I"../utils" -I"../utils/assembler" -I".." -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\AVR-Dx_DFP\1.8.95\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=avr128db48 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\AVR-Dx_DFP\1.8.95\gcc\dev\avr128db48" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/usart_basic.o: ../src/usart_basic.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Config" -I"../examples/include" -I"../include" -I"../utils" -I"../utils/assembler" -I".." -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\AVR-Dx_DFP\1.8.95\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=avr128db48 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\AVR-Dx_DFP\1.8.95\gcc\dev\avr128db48" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

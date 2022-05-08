@@ -40,42 +40,6 @@
 void OPERATIONAL_AMPLIFIER_0_initialization(void)
 {
 
-	// Disable digital input buffer
-	PD3_set_isc(PORT_ISC_INPUT_DISABLE_gc);
-	// Disable pull-up resistor
-	PD3_set_pull_mode(PORT_PULL_OFF);
-// Disable digital input buffer
-PORTD_pin_set_isc(1,PORT_ISC_INPUT_DISABLE_gc);
-// Disable pull-up resistor
-PORTD_set_pin_pull_mode(1,PORT_PULL_OFF);
-	// Disable digital input buffer
-	PD2_set_isc(PORT_ISC_INPUT_DISABLE_gc);
-	// Disable pull-up resistor
-	PD2_set_pull_mode(PORT_PULL_OFF);
-
-	// Disable digital input buffer
-	PD7_set_isc(PORT_ISC_INPUT_DISABLE_gc);
-	// Disable pull-up resistor
-	PD7_set_pull_mode(PORT_PULL_OFF);
-
-	// Disable digital input buffer
-	PD5_set_isc(PORT_ISC_INPUT_DISABLE_gc);
-	// Disable pull-up resistor
-	PD5_set_pull_mode(PORT_PULL_OFF);
-
-	// Disable digital input buffer
-	PE3_set_isc(PORT_ISC_INPUT_DISABLE_gc);
-	// Disable pull-up resistor
-	PE3_set_pull_mode(PORT_PULL_OFF);
-// Disable digital input buffer
-PORTE_pin_set_isc(1,PORT_ISC_INPUT_DISABLE_gc);
-// Disable pull-up resistor
-PORTE_set_pin_pull_mode(1,PORT_PULL_OFF);
-	// Disable digital input buffer
-	PE2_set_isc(PORT_ISC_INPUT_DISABLE_gc);
-	// Disable pull-up resistor
-	PE2_set_pull_mode(PORT_PULL_OFF);
-
 	OPERATIONAL_AMPLIFIER_0_init();
 }
 
@@ -88,12 +52,6 @@ void EVENT_SYSTEM_0_initialization(void)
 /* configure pins and initialize registers */
 void DAC_0_initialization(void)
 {
-
-	// Disable digital input buffer
-	DACOUT_set_isc(PORT_ISC_INPUT_DISABLE_gc);
-	// Disable pull-up resistor
-	DACOUT_set_pull_mode(PORT_PULL_OFF);
-
 	DAC_0_init();
 }
 
@@ -125,11 +83,6 @@ void TIMER_0_initialization(void)
 	TIMER_0_init();
 }
 
-void TIMER_1_initialization(void)
-{
-
-	TIMER_1_init();
-}
 
 /**
  * \brief System initialization
@@ -142,10 +95,7 @@ void system_init()
 
 	// Set pin direction to output
 
-	PORTF_set_pin_level(5, false);
 
-
-		PORTF_set_pin_dir(5, PORT_DIR_OUT);
 
 	OPERATIONAL_AMPLIFIER_0_initialization();
 
@@ -163,7 +113,7 @@ void system_init()
 
 	TIMER_0_initialization();
 
-	TIMER_1_initialization();
-
 	BOD_init();
+
+	USART_ASYNC_init();
 }
