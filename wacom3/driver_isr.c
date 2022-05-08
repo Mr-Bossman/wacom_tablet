@@ -67,9 +67,9 @@ ISR(TCA0_CMP0_vect)
 		_delay_loop_1(5);
 		OPAMP.OP0CTRLA |= OPAMP_OP0CTRLA_OUTMODE_NORMAL_gc;
 	}
-	if(blank == BLANK+(BLANK/2)){
-		uint16_t val = ADC_0_get_diff_conversion(ADC_MUXPOS_AIN0_gc, ADC_MUXNEG_GND_gc);
-		USART_ASYNC_write(val>>8);
+	if(blank == BLANK+5){
+		uint16_t val = ADC_0_get_conversion(ADC_MUXPOS_AIN0_gc);
+		USART_ASYNC_write((val>>8)-120);
 	}
 	if(blank == BLANK*2){
 		OPAMP.OP0CTRLA &= ~OPAMP_OP0CTRLA_OUTMODE_NORMAL_gc; 
@@ -80,8 +80,8 @@ ISR(TCA0_CMP0_vect)
 		if(pix == 33) {
 			PORTF.OUTCLR = PIN5_bm;
 			pix = 0;
+			USART_ASYNC_write(0xff);
 		}
-		USART_ASYNC_write(0xff);
 		conn tmp = array[pix];
 		ind(tmp.sel);
 		sel(~tmp.chip);

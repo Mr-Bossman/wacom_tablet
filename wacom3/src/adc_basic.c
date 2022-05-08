@@ -47,10 +47,10 @@
  */
 int8_t ADC_0_init()
 {
+	VREF_ADC0REF = 0x5;
+	ADC0.CTRLB = ADC_SAMPNUM_ACC2_gc; /* 128 results accumulated */
 
-	ADC0.CTRLB = ADC_SAMPNUM_ACC4_gc; /* 128 results accumulated */
-
-	ADC0.CTRLC = ADC_PRESC_DIV8_gc; /* CLK_PER divided by 2 */
+	ADC0.CTRLC = ADC_PRESC_DIV128_gc; /* CLK_PER divided by 2 */
 
 	ADC0.CTRLD = 0x0 << ADC_SAMPDLY_gp /* Sampling Delay Selection: 0x0 */
 		 | ADC_INITDLY_DLY0_gc; /* Delay 0 CLK_ADC cycles */
@@ -78,8 +78,8 @@ int8_t ADC_0_init()
 	             | 0 << ADC_FREERUN_bp   /* ADC Freerun mode: disabled */
 	             | ADC_RESSEL_12BIT_gc   /* 12-bit mode */
 	             | 1 << ADC_RUNSTBY_bp   /* Run standby mode: enabled */
-	             | 0 << ADC_LEFTADJ_bp   /* Left Adjust Result: disabled */
-	             | 1 << ADC_CONVMODE_bp; /* Differential Mode Conversion: enabled */
+	             | 1 << ADC_LEFTADJ_bp   /* Left Adjust Result: disabled */
+	             | 0 << ADC_CONVMODE_bp; /* Differential Mode Conversion: enabled */
 
 	return 0;
 }
