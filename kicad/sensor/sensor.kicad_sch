@@ -841,7 +841,6 @@
     )
   )
 
-
   (junction (at 49.53 124.46) (diameter 0) (color 0 0 0 0)
     (uuid 0566d9ff-dead-44a7-8ef7-1450e7c2b00e)
   )
@@ -1470,7 +1469,7 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 0b389188-6a7f-42a2-afbd-68631cd23f92)
   )
-  (label "157" (at 233.045 38.735 0)
+  (label "155" (at 233.045 38.735 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 0c63f2e4-2bb0-4599-977b-f8517705ec80)
   )
