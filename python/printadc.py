@@ -1,13 +1,18 @@
 import serial
 import math
-import numpy
+import numpy as np
 
 ser = serial.Serial('/dev/ttyACM0',115200)
 
 def printc(val):
 	val = min(val,255)
 	val = max(val,0)
-	print("\033[48;2;" + str(val) + ";" + str(val) + ";"+ str(val) + "m ", end="")
+	print("\033[48;2;" + str(val) + ";" + str(val) + ";"+ str(val) + "m  ", end="")
+
+def printR(val):
+	val = min(val,255)
+	val = max(val,0)
+	print("\033[48;2;" + str(val) + ";" + str(0) + ";"+ str(0) + "m  ", end="")
 
 def cleanme(arr):
 	maxed = -1
@@ -37,39 +42,66 @@ def interp(val,max,arr):
 
 while ser.read(1) != b'\xff':
 	pass
+def find_nearest(a, a0):
+    idx = np.abs(a - a0).argmin()
+    return a.flat[idx]
 
 while True:
 	vals = [x for x in ser.read(34)][:-1]
 	xarr = vals[:20]
 	yarr = vals[20:]
-	yarr = [yarr[i]-min(yarr) for i in range(len(yarr))]
-	xarr = [xarr[i]-min(xarr) for i in range(len(xarr))]
+	#xarr = [0,1,0,0,1,0,0,0,0,0,20,22,16,5,0,0]
+	#yarr = [0,0,1,0,0,0,5,10,3,0,0,1]
+	yarr = [0.01 + yarr[i]-min(yarr) for i in range(len(yarr))]
+	xarr = [0.01 + xarr[i]-min(xarr) for i in range(len(xarr))]
 	oxarr = xarr
 	oyarr = yarr
-	xto = 80
-	yto = 40
-	#ypolyv = numpy.polyfit(range(len(yarr)),yarr, 2)
-	#xpolyv = numpy.polyfit(range(len(xarr)),xarr, 2)
-	#ypoly = numpy.poly1d(ypolyv)
-	#xpoly = numpy.poly1d(xpolyv)
-	#yarr = [ ypoly(i*(len(yarr)/yto))for i in range(yto)]
-	#xarr = [ xpoly(i*(len(xarr)/xto))for i in range(xto)]
-	mapval = max(max(xarr)*max(yarr)/255,1)
+	xto = 40
+	yto = 20
+
+	meanx = sum(i*j for i, j in enumerate(xarr))/sum(xarr)
+	xpoint = round(meanx*xto/len(xarr))
+	dv = math.sqrt(sum((i-meanx)**2 * j for i, j in enumerate(xarr))/sum(xarr))
+	div = math.sqrt(2*math.pi)*dv
+	xarr = [math.exp(-0.5*((i - meanx)/dv)**2)/div for i in np.arange(0,len(xarr),len(xarr)/xto)]
+
+	meany = sum(i*j for i, j in enumerate(yarr))/sum(yarr)
+	ypoint = round(meany*yto/len(yarr))
+	dv = math.sqrt(sum((i-meany)**2 * j for i, j in enumerate(yarr))/sum(yarr))
+	div = math.sqrt(2*math.pi)*dv
+	yarr = [math.exp(-0.5*((i - meany)/dv)**2)/div for i in np.arange(0,len(yarr),len(yarr)/yto)]
 	print("\033c")
+	mapval = 255/(max(xarr)*max(yarr))
 	for y in range(len(yarr)):
 		for x in range(len(xarr)):
-			printc(int((xarr[x]*yarr[y])/mapval))
-		printc(int(yarr[y]/(max(max(yarr),1)/255)))
-		print("")
+			if(x == xpoint and y == ypoint):
+				printR(int(xarr[x]*yarr[y]*mapval))
+			else:
+				printc(int(xarr[x]*yarr[y]*mapval))
+		if(y == ypoint):
+			printR(int(yarr[y]*(255/max(yarr))))
+		else:
+			printc(int(yarr[y]*(255/max(yarr))))
+		print()
 	for x in range(len(xarr)):
-		printc(int(xarr[x]/(max(max(yarr),1)/255)))
+		if(x == xpoint):
+			printR(int(xarr[x]*(255/max(xarr))))
+		else:
+			printc(int(xarr[x]*(255/max(xarr))))
+
+
 	print("\033[0m")
 	for z in range(len(oxarr)):
-		print(str(oxarr[z]).rjust(3," "),end="")
+		print(str(int(oxarr[z])).rjust(3," "),end="")
 	for z in range(len(oyarr)):
-		print(str(oyarr[z]).rjust(3," "),end="")
+		print(str(int(oyarr[z])).rjust(3," "),end="")
 	print()
-	#print((xpolyv[1]/(-2*xpolyv[0]))*10)
-	#print(xpolyv)
-	print()
-ser.close()
+
+	#for z in range(len(oyarr)):
+	#	print(str(oyarr[z]).rjust(3," "),end="")
+	print(meanx*150/12,meany*95/12)
+	#print((xpolyv[1]/(-2*xpolyv[0])))
+	#print((ypolyv[1]/(-2*ypolyv[0])))
+	#print(xpoly)
+	#print()
+#ser.close()

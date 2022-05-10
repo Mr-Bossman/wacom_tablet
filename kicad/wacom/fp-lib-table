@@ -1,3 +1,4 @@
 (fp_lib_table
   (lib (name "AVR128DB48-I_PT")(type "KiCad")(uri "${KIPRJMOD}/AVR128DB48-I_PT")(options "")(descr ""))
+  (lib (name "button")(type "KiCad")(uri "${KIPRJMOD}/button")(options "")(descr ""))
 )
