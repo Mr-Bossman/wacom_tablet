@@ -65,19 +65,6 @@ void ADC_0_initialization(void)
 void TIMER_0_initialization(void)
 {
 
-	// Set pin direction to output
-
-	PE0_set_level(
-	    // <y> Initial level
-	    // <id> pad_initial_level
-	    // <false"> Low
-	    // <true"> High
-	    false);
-
-	PE0_set_dir(PORT_DIR_OUT);
-
-	/* set the alternate pin mux */
-
 	PORTMUX.TCAROUTEA |= PORTMUX_TCA02_bm;
 
 	TIMER_0_init();

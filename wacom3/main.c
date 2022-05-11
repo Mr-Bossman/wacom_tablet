@@ -4,6 +4,8 @@
 int main(void)
 {
 	/* Initializes MCU, drivers and middleware */
+
+	atmel_start_init();
 	PORTB.DIRSET = PIN0_bm;
 	PORTF.DIRSET = PIN4_bm | PIN5_bm;
 	VPORTF.DIR = PIN4_bm | PIN5_bm;
@@ -11,7 +13,8 @@ int main(void)
 	PORTC.DIR = 0xff;
 	VPORTC.DIR = 0xff;
 	PORTD.DIR = 0;
-	atmel_start_init();
+	PORTE.PIN0CTRL = 0;
+	PORTD.PIN3CTRL = 0;
 	while (1) {
 	}
 }

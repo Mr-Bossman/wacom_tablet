@@ -49,7 +49,7 @@ int8_t DAC_0_init()
 {
 
 	VREF_DAC0REF = 5;
-	DAC0.DATA = 0x20a << DAC_DATA_gp; /* DATA Register: 0x3ff */
+	DAC0.DATA = 0x1ff << DAC_DATA_gp; /* DATA Register: 0x3ff */
 	DAC0.CTRLA = 1 << DAC_ENABLE_bp      /* DAC Enable: enabled */
 	             | 1 << DAC_OUTEN_bp     /* Output Buffer Enable: enabled */
 	             | 1 << DAC_RUNSTDBY_bp; /* Run in Standby Mode: enabled */

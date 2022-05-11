@@ -52,30 +52,6 @@ void mcu_init(void)
 	 * peripheral if used */
 
 	/* Set all pins to low power mode */
-
-	for (uint8_t i = 0; i < 8; i++) {
-		*((uint8_t *)&PORTA + 0x10 + i) |= 1 << PORT_PULLUPEN_bp;
-	}
-
-	for (uint8_t i = 0; i < 8; i++) {
-		*((uint8_t *)&PORTB + 0x10 + i) |= 1 << PORT_PULLUPEN_bp;
-	}
-
-	for (uint8_t i = 0; i < 8; i++) {
-		*((uint8_t *)&PORTC + 0x10 + i) |= 1 << PORT_PULLUPEN_bp;
-	}
-
-	for (uint8_t i = 0; i < 8; i++) {
-		*((uint8_t *)&PORTD + 0x10 + i) |= 1 << PORT_PULLUPEN_bp;
-	}
-
-	for (uint8_t i = 0; i < 8; i++) {
-		*((uint8_t *)&PORTE + 0x10 + i) |= 1 << PORT_PULLUPEN_bp;
-	}
-
-	for (uint8_t i = 0; i < 8; i++) {
-		*((uint8_t *)&PORTF + 0x10 + i) |= 1 << PORT_PULLUPEN_bp;
-	}
 }
 #ifdef __cplusplus
 }

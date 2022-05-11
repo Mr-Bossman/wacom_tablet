@@ -90,7 +90,7 @@ int8_t OPERATIONAL_AMPLIFIER_0_init()
 			 | OPAMP_OP2RESMUX_MUXBOT_OFF_gc /* Multiplexer off */
 			 | OPAMP_OP2RESMUX_MUXWIP_WIP0_gc; /* R1 = 15R, R2 = 1R, R2/R1 = 0.07 */
 
-	OPAMP.OP2INMUX = OPAMP_OP2INMUX_MUXPOS_INP_gc /* Positive input pin for OPn */
+	OPAMP.OP2INMUX = OPAMP_OP2INMUX_MUXPOS_DAC_gc /* Positive input pin for OPn */
 			 | OPAMP_OP2INMUX_MUXNEG_INN_gc; /* Negative input pin for OPn */
 
 	return 0;
