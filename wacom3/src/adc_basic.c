@@ -48,7 +48,7 @@
 int8_t ADC_0_init()
 {
 	VREF_ADC0REF = 0x5;
-	ADC0.CTRLB = ADC_SAMPNUM_ACC2_gc; /* 128 results accumulated */
+	ADC0.CTRLB = ADC_SAMPNUM_ACC4_gc; /* 128 results accumulated */
 
 	ADC0.CTRLC = ADC_PRESC_DIV128_gc; /* CLK_PER divided by 2 */
 

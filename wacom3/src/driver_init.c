@@ -40,34 +40,27 @@
 void OPERATIONAL_AMPLIFIER_0_initialization(void)
 {
 
-	OPERATIONAL_AMPLIFIER_0_init();
 }
 
 void EVENT_SYSTEM_0_initialization(void)
 {
 
-	EVENT_SYSTEM_0_init();
 }
 
 /* configure pins and initialize registers */
 void DAC_0_initialization(void)
 {
-	DAC_0_init();
 }
 
 /* Configure pins and initialize registers */
 void ADC_0_initialization(void)
 {
 
-	ADC_0_init();
 }
 
 void TIMER_0_initialization(void)
 {
 
-	PORTMUX.TCAROUTEA |= PORTMUX_TCA02_bm;
-
-	TIMER_0_init();
 }
 
 
@@ -76,31 +69,6 @@ void TIMER_0_initialization(void)
  */
 void system_init()
 {
-	mcu_init();
-
-	/* PORT setting on PE1 */
-
-	// Set pin direction to output
 
 
-
-	OPERATIONAL_AMPLIFIER_0_initialization();
-
-	CLKCTRL_init();
-
-	EVENT_SYSTEM_0_initialization();
-
-	SLPCTRL_init();
-
-	CPUINT_init();
-
-	DAC_0_initialization();
-
-	ADC_0_initialization();
-
-	TIMER_0_initialization();
-
-	BOD_init();
-
-	USART_ASYNC_init();
 }

@@ -63,7 +63,7 @@ ISR(TCA0_CMP0_vect)
 	if(blank == BLANK){
 		PORTF.OUTSET = PIN5_bm;
 		PORTF.OUTSET = PIN4_bm;
-		PORTE.DIRCLR = 1;
+		PORTF.DIRCLR =  0x7;
 		_delay_loop_1(14);
 		OPAMP.OP0CTRLA |= OPAMP_OP0CTRLA_OUTMODE_NORMAL_gc;
 	}
@@ -73,7 +73,7 @@ ISR(TCA0_CMP0_vect)
 	}
 	if(blank == BLANK*2){
 		OPAMP.OP0CTRLA &= ~OPAMP_OP0CTRLA_OUTMODE_NORMAL_gc; 
-		PORTE.DIRSET = 1;
+		PORTF.DIRSET = 0x7;
 		blank = 0;
 		pix++;
 		PORTF.OUTCLR = PIN4_bm;

@@ -45,21 +45,21 @@ int8_t TIMER_0_init()
 
 	TCA0.SINGLE.CMP0 = 0x78; /* Compare Register 0: 0x78 */
 
-	// TCA0.SINGLE.CMP1 = 0x0; /* Compare Register 1: 0x0 */
+	TCA0.SINGLE.CMP1 = 0x78; /* Compare Register 1: 0x0 */
 
-	// TCA0.SINGLE.CMP2 = 0x0; /* Compare Register 2: 0x0 */
+	TCA0.SINGLE.CMP2 = 0x78; /* Compare Register 2: 0x0 */
 
 	// TCA0.SINGLE.CNT = 0x0; /* Count: 0x0 */
 
 	TCA0.SINGLE.CTRLB = 1 << TCA_SINGLE_ALUPD_bp    /* Auto Lock Update: enabled */
 	                    | 1 << TCA_SINGLE_CMP0EN_bp /* Compare 0 Enable: enabled */
-	                    | 0 << TCA_SINGLE_CMP1EN_bp /* Compare 1 Enable: disabled */
-	                    | 0 << TCA_SINGLE_CMP2EN_bp /* Compare 2 Enable: disabled */
+	                    | 1 << TCA_SINGLE_CMP1EN_bp /* Compare 1 Enable: disabled */
+	                    | 1 << TCA_SINGLE_CMP2EN_bp /* Compare 2 Enable: disabled */
 	                    | TCA_SINGLE_WGMODE_FRQ_gc; /*  */
 
 	TCA0.SINGLE.CTRLC = 1 << TCA_SINGLE_CMP0OV_bp    /* Compare 0 Waveform Output Value: enabled */
-	                    | 0 << TCA_SINGLE_CMP1OV_bp  /* Compare 1 Waveform Output Value: disabled */
-	                    | 0 << TCA_SINGLE_CMP2OV_bp; /* Compare 2 Waveform Output Value: disabled */
+	                    | 1 << TCA_SINGLE_CMP1OV_bp  /* Compare 1 Waveform Output Value: disabled */
+	                    | 1 << TCA_SINGLE_CMP2OV_bp; /* Compare 2 Waveform Output Value: disabled */
 
 	// TCA0.SINGLE.DBGCTRL = 0 << TCA_SINGLE_DBGRUN_bp; /* Debug Run: disabled */
 
