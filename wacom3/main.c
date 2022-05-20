@@ -16,6 +16,8 @@ int main(void)
 	TIMER_0_init();
 	BOD_init();
 	USART_ASYNC_init();
+	PORTA.DIRSET = 1 <<2;
+	PORTA.OUTSET =1 <<2;
 	PORTB.DIRSET = PIN0_bm;
 	PORTF.DIRSET = PIN4_bm | PIN5_bm;
 	PORTB.DIRCLR = PIN1_bm;

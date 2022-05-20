@@ -50,7 +50,9 @@ typedef union {
 #define XTOTAL 20
 #define YTOTAL 13
 const conn array[XTOTAL+YTOTAL] = {0b00001101, 0b00001111, 0b00001110, 0b00001100, 0b00001010, 0b00001001, 0b00001000, 0b00001011, 0b00010100, 0b00010110, 0b00010111, 0b00010101, 0b00010010, 0b00010001, 0b00010000, 0b00010011, 0b00100100, 0b00100110, 0b00100111, 0b00100101, 0b01000011, 0b01000000, 0b01000001, 0b01000010, 0b01000100, 0b01000110, 0b01000111, 0b01000101, 0b10000011, 0b10000000, 0b10000001, 0b10000010, 0b10000101};
-#define BLANK 128
+#define BLANK 100
+#define TOP 300
+
 inline void ind(uint8_t val){
 			PORTC.OUT = (PORTC.OUT&0xf8) | (val&7);
 }
@@ -60,20 +62,22 @@ inline void sel(uint8_t val){
 ISR(TCA0_CMP0_vect)
 {
 	/* Insert your TCA Compare 0 Interrupt handling code here */
-	if(blank == BLANK){
+	if(blank == TOP-BLANK){
+		PORTF.DIRCLR =  0x7;
+		_delay_loop_1(20);
 		PORTF.OUTSET = PIN5_bm;
 		PORTF.OUTSET = PIN4_bm;
-		PORTF.DIRCLR =  0x7;
 		_delay_loop_1(14);
+		PORTA.OUTSET =1 <<2;
 		OPAMP.OP0CTRLA |= OPAMP_OP0CTRLA_OUTMODE_NORMAL_gc;
-	}
-	if(blank == BLANK+5){
+		_delay_loop_1(4);
 		uint16_t val = ADC_0_get_conversion(ADC_MUXPOS_AIN0_gc);
-		USART_ASYNC_write((val>>8)-120);
+		USART_ASYNC_write(val>>8);
 	}
-	if(blank == BLANK*2){
+	if(blank == TOP){
 		OPAMP.OP0CTRLA &= ~OPAMP_OP0CTRLA_OUTMODE_NORMAL_gc; 
 		PORTF.DIRSET = 0x7;
+		PORTA.OUTCLR =1 <<2;
 		blank = 0;
 		pix++;
 		PORTF.OUTCLR = PIN4_bm;
