@@ -3,9 +3,9 @@ import numpy as np
 import serial
 import math
 
-ser = serial.Serial('/dev/ttyACM0',115200)
-xto = 150
-yto = 95
+ser = serial.Serial('/dev/ttyUSB0',115200)
+xto = 150*4
+yto = 95*4
 img = np.zeros([yto,xto,3],dtype=np.uint8)
 cons = math.sqrt(2*math.pi)
 while ser.read(1) != b'\xff':
@@ -34,25 +34,22 @@ while True:
 
 	print(meanx*150/20,meany*95/12)
 
-	mapval = 255*2.3
-	for z in range(yto*xto):
-		x = z//yto
-		y = z%yto
-		yind = y*(len(yarr)/yto)
-		xind = x*(len(xarr)/xto)
-		if (yind - meany)/dvy > 2:
-			img[y][x] = (0,0,0)
-			continue
-		if (xind - meanx)/dvx > 2:
-			img[y][x] = (0,0,0)
-			continue
-		yval = math.exp(-0.5*((yind - meany)/dvy)**2)/divy
-		xval = math.exp(-0.5*((xind - meanx)/dvx)**2)/divx
-		bright = int(yval*xval*mapval)
-		if abs(meanx-xind) < 0.1 and abs(meany-yind) < 0.1:
-			img[y][x] = (0,0,bright)
-		else:
-			img[y][x] = (bright,bright,bright)
-	cv2.imshow('pix', cv2.resize(img, (xto*8,yto*8), interpolation = cv2.INTER_AREA))
+	mapval = 255*2
+
+	offx = min(2*dvx,2.5)
+	offy = min(2*dvy,2.5)
+	img.fill(0)
+	for x in range(max(int(xto*(meanx-offx)/len(xarr)),0),min(int(xto*(meanx+offx)/len(xarr)),xto)):
+		for y in range(max(int(yto*(meany-offy)/len(yarr)),0),min(int(yto*(meany+offy)/len(yarr)),yto)):
+			yind = y*(len(yarr)/yto)
+			xind = x*(len(xarr)/xto)
+			yval = math.exp(-0.5*((yind - meany)/dvy)**2)/divy
+			xval = math.exp(-0.5*((xind - meanx)/dvx)**2)/divx
+			bright = int(yval*xval*mapval)
+			if abs(meanx-xind) < 0.02 and abs(meany-yind) < 0.02:
+				img[y][x] = (0,0,bright)
+			else:
+				img[y][x] = (bright,bright,bright)
+	cv2.imshow('pix', cv2.resize(img, (xto*4,yto*4), interpolation = cv2.INTER_AREA))
 	if cv2.waitKey(10) != -1:
 		break

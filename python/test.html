@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;height:100%;width:100%;background-color: grey;">
+
+<canvas id="myCanvas" width="0" height="0" style="margin:0;">
+Your browser does not support the HTML canvas tag.</canvas>
+<div style="position: absolute; left: 60%; top: 50%;">
+<input id="text" type="text" value="622"></input>
+<button onclick="draw()">click</button>
+</div>
+<script src="https://raw.githack.com/rfink/polyfit.js/master/index.js"></script>
+<script>
+function section(h, r) // returns the positive root of intersection of line y = h with circle centered at the origin and radius r
+{
+	return (h < r)? Math.sqrt(r * r - h * h) : 0; // http://www.wolframalpha.com/input/?i=r+*+sin%28acos%28x+%2F+r%29%29+%3D+h
+}
+
+function g(x, h, r) // indefinite integral of circle segment
+{
+	return 0.5 * (Math.sqrt(1 - x * x / (r * r)) * x * r + r * r * Math.asin(x / r) - 2 * h * x); // http://www.wolframalpha.com/input/?i=r+*+sin%28acos%28x+%2F+r%29%29+-+h
+}
+
+function barea(x0, x1, h, r) // area of intersection of an infinitely tall box with left edge at x0, right edge at x1, bottom edge at h and top edge at infinity, with circle centered at the origin with radius r
+{
+	if(x0 > x1){
+		let tmp = x0;
+		x0 = x1;
+		x1 = tmp;
+	}
+	let s = section(h, r);
+	return g(Math.max(-s, Math.min(s, x1)), h, r) - g(Math.max(-s, Math.min(s, x0)), h, r); // integrate the area
+}
+
+function aarea(x0, x1, y0, y1, r) // area of the intersection of a finite box with a circle centered at the origin with radius r
+{
+	if(y0 > y1){
+		let tmp = y0;
+		y0 = y1;
+		y1 = tmp;
+	}
+	if(y0 < 0) {
+		if(y1 < 0)
+			return aarea(x0, x1, -y0, -y1, r); // the box is completely under, just flip it above and try again
+		else
+			return aarea(x0, x1, 0, -y0, r) + aarea(x0, x1, 0, y1, r); // the box is both above and below, divide it to two boxes and go again
+	} else {
+		return barea(x0, x1, y0, r) - barea(x0, x1, y1, r); // area of the lower box minus area of the higher box
+	}
+}
+
+function area(x0, x1, y0, y1, cx, cy, r) // area of the intersection of a general box with a general circle
+{
+	x0 -= cx; x1 -= cx;
+	y0 -= cy; y1 -= cy;
+	if(r == 0)
+	return 0;
+	// get rid of the circle center
+	return aarea(x0, x1, y0, y1, r);
+}
+
+function draw(evt) {
+	let tex = document.getElementById("text").value;
+	let context = c.getContext("2d");
+	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+	const pos = Number(tex)
+	//const pos = evt.clientY;
+	const step = 5;
+	const top = step*20;
+	const total = 1+(colors.length-2)*2;
+	const mula = c.height/total
+	const wd2 = c.width/2;
+	let vals = new Array(colors.length).fill(0);
+	for(i = 1; i < total;i++){
+		let out = 2;
+		if((i-1)%2 == 0)
+			out += (i-1)/2;
+		else
+			out += (i-6)/2;
+		let voltage = 0;
+		for(let f = top;f >=0;f-=step){
+			const alpha = Math.pow(Math.abs(f/40)+1,-3);
+			const subarea = area(0,wd2,(i*mula)-(lineHeight/2),(i*mula)+(lineHeight/2),wd2/2, pos,f);
+			const addArea = area(0,wd2,(i*mula)-(lineHeight/2),(i*mula)+(lineHeight/2),wd2/2, pos,f+step);
+			voltage += (addArea-subarea)*alpha
+		}
+		vals[out] += voltage
+	}
+	var maps = new Array(total);
+	for(i = 0; i < total-1;i++){
+		let out = 2;
+		if(i%2 == 0)
+			out += i/2;
+		else
+			out += (i-5)/2;
+			maps[i] = {pos:i,val:vals[out]};
+	}
+	maps= maps.sort((a, b) => a.val - b.val).filter((a)=>a.val > 0);
+	const maximal1 = maps[maps.length-1].pos;
+	const maximal2 = maps[maps.length-2].pos;
+	mapsa = maps.filter((a)=>Math.abs(maximal1-a.pos)<3);
+	mapsb = maps.filter((a)=>Math.abs(maximal2-a.pos)<3);
+	if(mapsa.length > mapsb.length)
+		maps = mapsa;
+	else
+		maps = mapsb;
+	console.log(maps)
+	let mean = maps.reduce((sum,ind) => ind.pos*ind.val + sum,0)/maps.reduce((sum,ind) => ind.val + sum,0);
+	for(i = 1; i < total;i++){
+		let out = 2;
+		if((i-1)%2 == 0)
+			out += (i-1)/2;
+		else
+			out += (i-6)/2;
+		ctx.font = '20px serif';
+		ctx.fillText(vals[out].toPrecision(5).toString() + ", "+ (i*mula).toPrecision(5).toString(), wd2 + 10, i*mula+(lineHeight/2));
+		hline(i*mula,colors[out]);
+	}
+	for(let i = top;i >=0;i-=step){
+		const alpha = Math.pow(Math.abs(i/40)+1,-3);
+		ctx.beginPath();
+		ctx.lineWidth = step+0.2;
+		ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
+		ctx.arc(c.width/4, pos, i+step/2, 0, 2 * Math.PI);
+		ctx.stroke();
+	}
+	ctx.fillText(((mean+1)*mula).toPrecision(5).toString() + ", "+ pos.toPrecision(5).toString(), wd2 + 100, (c.height/2));
+	//console.log(((mean+1)*mula)-pos)
+}
+
+function hline(y,color){
+	let ctx = c.getContext("2d");
+	ctx.beginPath();
+	ctx.lineWidth = lineHeight;
+	ctx.strokeStyle = `rgb(${color.r},${color.g},${color.b})`
+	ctx.moveTo(0, y);
+	ctx.lineTo(c.width/2, y);
+	ctx.stroke();
+}
+
+const lineHeight = 10;
+let c = document.getElementById("myCanvas");
+const ctx = c.getContext("2d");
+ctx.canvas.width  = window.innerWidth-10;
+ctx.canvas.height = window.innerHeight-10;
+//window.addEventListener('mousemove', draw, false);
+let colors = [{r:0,g:255,b:0},{r:255,g:0,b:255},{r:255,g:0,b:0},{r:0,g:0,b:255},{r:200,g:200,b:0},{r:0,g:0,b:0},{r:0,g:255,b:255},{r:255,g:255,b:255},{r:255,
+g:100,b:100},{r:100,g:100,b:255}]
+draw()
+var poly = new Polyfit([ 1, 2, 3, 4, 5 ], [ 0.01, 0.03, -0.02, 0.03, 0.02 ]);
+  var solver = poly.getPolynomial(6);
+  console.log(solver(1.17));
+
+</script>
+
+</body>
+</html>
+
