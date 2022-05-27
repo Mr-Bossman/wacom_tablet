@@ -28,11 +28,10 @@ while True:
 			out += i//2
 		else:
 			out += (i-5)//2
-		if(out < 4):
-			if(out == 0): out = 1
-			elif(out == 1): out = 3
-			elif(out == 2): out = 0
-			elif(out == 3): out = 2
+		if(out == 0): out = 1
+		elif(out == 1): out = 3
+		elif(out == 2): out = 0
+		elif(out == 3): out = 2
 		maps.append((i,xarr[out]));
 	print(list(filter(check,sorted(maps,key=gkey))))
 
