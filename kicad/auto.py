@@ -100,69 +100,71 @@ def indtoNum(i):
 	elif(out == 3): out = 2
 	return out
 
-def run_viaFront(board,offset,ind):
+def run_viaX(board,offset,ind):
 	net = "/X"+str(indtoNum(ind))
+	net2 = "/X"+str(indtoNum(ind-1))
 	flip_ama = -loopNumX(1)+(track_spaceing*(count_per-1))
 	#spurr top and bottom
 	tracesF = TRACK_spurr
 	for i in range(len(tracesF)):
 		arr = offsetArr(tracesF[i],(offset[0]+i*track_spaceing,offset[1]))
-		routeArr(board,arr,FromMM(track_width),F_Cu,net)
+		routeArr(board,arr,FromMM(track_width),B_Cu,net)
 		createVIA(board,arr[-1],net)
 		arr = offsetArr(mulArr(tracesF[i],(-1,-1)),(offset[0]+(-i*track_spaceing)+flip_ama,offset[1]+total_height+2*track_padding))
-		routeArr(board,arr,FromMM(track_width),F_Cu,"/X"+str(indtoNum(ind-1)))
-		createVIA(board,arr[-1],"/X"+str(indtoNum(ind-1)))
+		routeArr(board,arr,FromMM(track_width),B_Cu,net2)
+		createVIA(board,arr[-1],net2)
 	#back top and bottom
 	tracesB = TRACK_jump
 	for i in range(len(tracesB)):
 		arr = offsetArr(tracesB[i],(offset[0]+i*track_spaceing,offset[1]))
-		routeArr(board,arr,FromMM(track_width),B_Cu,net)
+		routeArr(board,arr,FromMM(track_width),F_Cu,net)
 		createVIA(board,arr[0],net)
 		arr = offsetArr(mulArr(tracesB[i],(-1,-1)),(offset[0]+(-i*track_spaceing)+flip_ama,offset[1]+total_height+2*track_padding))
-		routeArr(board,arr,FromMM(track_width),B_Cu,"/X"+str(indtoNum(ind-1)))
-		createVIA(board,arr[0],"/X"+str(indtoNum(ind-1)))
+		routeArr(board,arr,FromMM(track_width),F_Cu,net2)
+		createVIA(board,arr[0],net2)
 	#front top
 	tracesF = TRACK_loop
 	for i in range(len(tracesF)):
 		arr = offsetArr(tracesF[i],(offset[0]+(i*track_spaceing)-loopNumX(1),offset[1]))
-		routeArr(board,arr,FromMM(track_width),F_Cu,"/X"+str(indtoNum(ind-1)))
+		routeArr(board,arr,FromMM(track_width),B_Cu,net2)
 	#front bottom
 	tracesF = TRACK_loopover
 	for i in range(len(tracesF)):
 		arr = offsetArr(mulArr(tracesF[i],(-1,-1)),(offset[0]+(i*track_spaceing),offset[1]+total_height+2*track_padding))
-		routeArr(board,arr,FromMM(track_width),F_Cu,net)
+		routeArr(board,arr,FromMM(track_width),B_Cu,net)
 
-def run_viaBack(board,offset,ind):
-	net = "/Y"+str(indtoNum(ind))
+def run_viaY(board,offset,ind):
+	net = "/Y"+str(indtoNum((county-1)-ind))
+	net2 = "/Y"+str(indtoNum(county-ind))
 	flip_ama = -loopNumY(1)+(track_spaceing*(count_per-1))
 	#spurr top and bottom
 	tracesF = TRACK_spurr
 	for i in range(len(tracesF)):
 		arr = offsetArr(swapArr(tracesF[i]),(offset[0],offset[1]+i*track_spaceing))
-		routeArr(board,arr,FromMM(track_width),B_Cu,net)
+		routeArr(board,arr,FromMM(track_width),F_Cu,net)
 		createVIA(board,arr[-1],net)
 		arr = offsetArr(mulArr(swapArr(tracesF[i]),(-1,-1)),(offset[0]+total_width+2*track_padding,offset[1]+(-i*track_spaceing)+flip_ama))
-		routeArr(board,arr,FromMM(track_width),B_Cu,"/Y"+str(indtoNum(ind-1)))
-		createVIA(board,arr[-1],"/Y"+str(indtoNum(ind-1)))
+		routeArr(board,arr,FromMM(track_width),F_Cu,net2)
+		createVIA(board,arr[-1],net2)
 	#back top and bottom
 	tracesB = TRACK_jump
 	for i in range(len(tracesB)):
 		arr = offsetArr(swapArr(tracesB[i]),(offset[0],offset[1]+i*track_spaceing))
-		routeArr(board,arr,FromMM(track_width),F_Cu,net)
+		routeArr(board,arr,FromMM(track_width),B_Cu,net)
 		createVIA(board,arr[0],net)
 		arr = offsetArr(mulArr(swapArr(tracesB[i]),(-1,-1)),(offset[0]+total_width+2*track_padding,offset[1]+(-i*track_spaceing)+flip_ama))
-		routeArr(board,arr,FromMM(track_width),F_Cu,"/Y"+str(indtoNum(ind-1)))
-		createVIA(board,arr[0],"/Y"+str(indtoNum(ind-1)))
+		routeArr(board,arr,FromMM(track_width),B_Cu,net2)
+		createVIA(board,arr[0],net2)
 	#front top
 	tracesF = TRACK_loop
 	for i in range(len(tracesF)):
 		arr = offsetArr(swapArr(tracesF[i]),(offset[0],offset[1]+(i*track_spaceing)-loopNumY(1)))
-		routeArr(board,arr,FromMM(track_width),B_Cu,"/Y"+str(indtoNum(ind-1)))
+		routeArr(board,arr,FromMM(track_width),F_Cu,net2)
 	#front bottom
 	tracesF = TRACK_loopover
 	for i in range(len(tracesF)):
 		arr = offsetArr(mulArr(swapArr(tracesF[i]),(-1,-1)),(offset[0]+total_width+2*track_padding,offset[1]+(i*track_spaceing)))
-		routeArr(board,arr,FromMM(track_width),B_Cu,net)
+		routeArr(board,arr,FromMM(track_width),F_Cu,net)
 
 class SimplePlugin(pcbnew.ActionPlugin):
 	def defaults(self):
@@ -184,16 +186,16 @@ class SimplePlugin(pcbnew.ActionPlugin):
 			for b in range(count_per):
 				sp = ((b*track_spaceing)+corner[0]+offset,corner[1]-track_padding)
 				ep = ((b*track_spaceing)+corner[0]+offset,corner[1]+total_height+track_padding)
-				createtrack(board,sp,ep,FromMM(track_width),F_Cu,net)
+				createtrack(board,sp,ep,FromMM(track_width),B_Cu,net)
 			if(i%2):
-				run_viaFront(board,(corner[0]+offset,corner[1]-track_padding),i)
+				run_viaX(board,(corner[0]+offset,corner[1]-track_padding),i)
 		for i in range(county):
-			net = "/Y"+str(indtoNum(i))
+			net = "/Y"+str(indtoNum((county-1)-i))
 			offset = loopNumY(i) + offsetsy
 			for b in range(count_per):
 				sp = (corner[0]-track_padding,(b*track_spaceing)+offset+corner[1])
 				ep = (corner[0]+total_width+track_padding,(b*track_spaceing)+offset+corner[1])
-				createtrack(board,sp,ep,FromMM(track_width),B_Cu,net)
+				createtrack(board,sp,ep,FromMM(track_width),F_Cu,net)
 			if(i%2):
-				run_viaBack(board,(corner[0]-track_padding,corner[1]+ offset),i)
+				run_viaY(board,(corner[0]-track_padding,corner[1]+ offset),i)
 SimplePlugin().register()
