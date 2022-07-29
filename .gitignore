@@ -5,3 +5,29 @@ wacom3/Debug/*
 wacom3/Release/*
 !wacom3/Release/Makefile
 !wacom3/Release/makedep.mk
+
+### COMPRESSED FILES ###########################################################
+
+*.zip
+*.tar.gz
+*.tgz
+*.tar.bz2
+*.tbz2
+
+### PYTHON #####################################################################
+
+/__pycache__/
+*.pyc
+*.pyo
+*.egg-info
+
+### KICAD ######################################################################
+
+/**-backups/
+**\#auto_saved_files\#
+**.kicad_prl
+**.pro
+**-bak
+/kicad/wacom/gerber/*
+!/kicad/wacom/gerber/.hidden
+**fp-info-cache

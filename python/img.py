@@ -3,7 +3,7 @@ import numpy as np
 import serial
 import math
 
-ser = serial.Serial('/dev/ttyUSB0',115200)
+ser = serial.Serial('/dev/ttyUSB0',1000000)
 xto = 150
 yto = 95
 cv2.namedWindow('pix', cv2.WINDOW_NORMAL)
@@ -27,8 +27,8 @@ while True:
 	yarr = vals[20:]
 	print("\033c")
 	print(sorted(enumerate(xarr),key=gkey)[-5:])
-	yarr = [0.01 + yarr[i]-min(yarr) for i in range(len(yarr))]
-	xarr = [0.01 + xarr[i]-min(xarr) for i in range(len(xarr))]
+	yarr = [i-min(yarr) if i-min(yarr) > 10 else 0.01 for i in yarr]
+	xarr = [i-min(xarr) if i-min(xarr) > 10 else 0.01 for i in xarr]
 	for z in range(len(xarr)):
 		print(str(int(xarr[z])).rjust(3," "),end="")
 	print()
@@ -52,7 +52,10 @@ while True:
 	#print(meanx*150/20,meany*95/12)
 
 	mapval = 255*2.3
-	img = cv2.circle(img,(round(meanx*xto/20),round(meany*yto/12)),0,(0,0,255),5)
+	img = cv2.circle(img,(round(meanx*xto/20),round(meany*yto/12)),0,(0,0,255),2)
 	cv2.imshow('pix', img)
-	if cv2.waitKey(10) != -1:
+	p = cv2.waitKey(10)
+	if p == ord('c'):
+		img = np.zeros([yto,xto,3],dtype=np.uint8)
+	elif p != -1:
 		break

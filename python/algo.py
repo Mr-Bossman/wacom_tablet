@@ -1,16 +1,23 @@
-import cv2
 import numpy as np
 import serial
 import math
 
-ser = serial.Serial('/dev/ttyUSB0',115200)
+ser = serial.Serial('/dev/ttyUSB1',115200)
 xto = 150
 yto = 95
-totalx = (20-2)*2
-def gkey(item):
-	return item[1]
-def check(item):
-	return item[1]>5
+def calc(arr):
+	#maps = list(filter(lambda i:i[1]>5,sorted(,key=lambda i:i[1])))
+	maximal = maps[-1][0]
+	maps = list(filter(lambda a: abs(maximal-a[0]) <= 2,enumerate(arr)))
+	return [m[1] for m in maps]
+def prii(arr):
+	for z in range(len(arr)):
+		print(str(int(arr[z])).rjust(3," "),end="")
+	print()
+	for z in range(len(arr)):
+		print(str(z).rjust(3," "),end="")
+	print()
+
 while ser.read(1) != b'\xff':
 	pass
 
@@ -19,34 +26,18 @@ while True:
 	xarr = list(reversed(vals[:20]))
 	yarr = vals[20:]
 	yarr = [yarr[i]-min(yarr) for i in range(len(yarr))]
-	xarr = [xarr[i]-min(xarr) for i in range(len(xarr))]
+	xarr =list(reversed([xarr[i]-min(xarr) for i in range(len(xarr))]))
 	print("\033c")
-	maps=[]
-	for i in range(totalx):
-		out = 2
-		if(i%2 == 0):
-			out += i//2
-		else:
-			out += (i-5)//2
-		if(out == 0): out = 1
-		elif(out == 1): out = 3
-		elif(out == 2): out = 0
-		elif(out == 3): out = 2
-		maps.append((i,xarr[out]));
-	print(list(filter(check,sorted(maps,key=gkey))))
 
-	for z in range(len(xarr)):
-		print(str(int(xarr[z])).rjust(3," "),end="")
-	print()
-	for z in range(len(xarr)):
-		print(str(z).rjust(3," "),end="")
-	print()
-	for z in range(len(yarr)):
-		print(str(int(yarr[z])).rjust(3," "),end="")
-	print()
-	for z in range(len(yarr)):
-		print(str(z).rjust(3," "),end="")
-	print()
+	all = list(filter(lambda i:i[1] > max(xarr)/2, enumerate(xarr)))
+	all.append((all[-1][0]+1,0))
+	#all = [(all[0][0]+1,0)] + all
+	print(all)
+	x = np.array([i[0] for i in all])
+	y = np.array([i[1] for i in all])
+	z = np.polyfit(x, y, 2)
+	print(round((-z[1]/(2*z[0]))*(xto/20),2))
+	prii(xarr)
 	meanx = sum(i*j for i, j in enumerate(xarr))/sum(xarr)
-
-	meany = sum(i*j for i, j in enumerate(yarr))/sum(yarr)
+	print(meanx)
+	#meany = sum(i*j for i, j in enumerate(yarr))/sum(yarr)
